@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import cardapio from './itens.json';
+import cardapio from '../../../data/cardapio.json';
+import { Cardapio } from '../../../types/Prato';
 import Item from './Item';
 import styles from './Itens.module.scss';
 
@@ -24,23 +25,23 @@ export default function Itens(props: Props) {
         return true;
     }
 
-    function ordenar(novaLista: typeof cardapio) {
+    function ordenar(novaLista: Cardapio) {
         switch (ordenador) {
-            case 'porcao':
-                return novaLista.sort((a, b) => a.size > b.size ? 1 : -1);
-            case 'qtd_pessoas':
-                return novaLista.sort((a, b) => a.serving > b.serving ? 1 : -1);
-            case 'preco':
-                return novaLista.sort((a,b) => a.price > b.price ? 1 : -1);
-            default:
-                return novaLista;
+        case 'porcao':
+            return novaLista.sort((a, b) => a.size > b.size ? 1 : -1);
+        case 'qtd_pessoas':
+            return novaLista.sort((a, b) => a.serving > b.serving ? 1 : -1);
+        case 'preco':
+            return novaLista.sort((a,b) => a.price > b.price ? 1 : -1);
+        default:
+            return novaLista;
         }
     }
 
     useEffect(() => {
         const novaLista = cardapio.filter(item => testaBusca(item.title) && testaFiltro(item.category.id));
         setLista(ordenar(novaLista));
-    }, [busca, filtro, ordenador])
+    }, [busca, filtro, ordenador]);
 
 
     return (
@@ -49,5 +50,5 @@ export default function Itens(props: Props) {
                 <Item key={item.id} {...item} />
             ))}
         </div>
-    )
+    );
 }
